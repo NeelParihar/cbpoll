@@ -18,6 +18,8 @@ import { useParams } from "react-router";
 import { myFirestore, firebase } from '../firebase'
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Divider from '@material-ui/core/Divider';
+
 const ColorButton = withStyles((theme) => ({
     root: {
         color: 'white',
@@ -28,6 +30,7 @@ const ColorButton = withStyles((theme) => ({
             color: 'white'
         },
         width: '30vh',
+        marginBottom:40,
         margin: theme.spacing(1),
 
     },
@@ -59,9 +62,20 @@ const useStyles = makeStyles((theme) => ({
         color: 'grey',
         fontStyle: 'italic'
     },
+    share: {
+        margin: 10,
+        fontSize: 22,
+        alignItems: 'left',
+        color: '#FF8E53',
+        
+    },
+    link:{
+        margin: 5,
+        fontSize: '1.5vh',
+        color:'grey'
+    },
     vote: {
-        
-        
+
         alignSelf: 'left',
         color: 'grey',
         
@@ -112,7 +126,7 @@ export default function Poll(props) {
     let { id } = useParams();
     const [poll, setPoll] = useStateWithLocalStorage('localPoll');
     const [pollData, setPollData] = useStateWithLocalStorage({});
-
+    const [loading, setLoading] = React.useState(true);
     // const getdata=()=>{
     //     myFirestore.collection("poll").doc(id)
     //         .onSnapshot(function (doc) {
@@ -155,7 +169,7 @@ export default function Poll(props) {
     
 
     const [open, setOpen] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+    
     const [totalvotes,setTotalVotes] = React.useState(0);
     const [option, setOption] = useStateWithLocalStorage('localOption');
 
@@ -286,7 +300,13 @@ export default function Poll(props) {
                     </CardContent>
 
                     {pollData.title&&<ColorButton size="large" onClick={onSubmit} disabled={poll === id} >Vote</ColorButton>}
-
+                    <Divider />
+                    <Typography className={classes.share} variant="body2"  >
+                                {"Share this Poll"}
+                            </Typography>
+                            <Typography className={classes.link} variant="body2"  >
+                                {"https://cbpoll.netlify.app/poll/"+id}
+                            </Typography>
                 </Card>
 
             </Container>

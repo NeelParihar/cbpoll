@@ -12,6 +12,8 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import IconButton from '@material-ui/core/IconButton';
 import {withRouter} from 'react-router-dom';
 import {myFirestore} from '../firebase.js';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
     Formik
   } from 'formik';
@@ -30,7 +32,7 @@ const ColorButton = withStyles((theme) => ({
     },
 }))(Button);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) =>({
     mainCard: {
         marginTop: 60,
         minWidth: 250,
@@ -58,7 +60,11 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
-});
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
  function CreatePoll(props) {
     const classes = useStyles();
 
@@ -88,7 +94,7 @@ function FormCreate(props) {
     const classes = useStyles();
     const defaultOptions = [{option:'',votes:0},{option:'',votes:0}];
     const [options,setOptions] = React.useState(defaultOptions)
-  
+    const [loading, setLoading] = React.useState(false);
     const removeOptions = () => {
         if (options.length > 2) {
             // var newArr = options.slice(0, -1); 
@@ -115,7 +121,7 @@ function FormCreate(props) {
                 onSubmit={(values) => {
                    console.table(values);
                    console.table(options);
-
+                    setLoading(true);
                    myFirestore.collection("poll").add({
                     title:values.title,
                     description:values.description,
@@ -124,6 +130,7 @@ function FormCreate(props) {
                 })
                 .then(function(doc) {
                     console.log("Document successfully written!"+doc.id);
+                    setLoading(false)
                     props.history.push('/poll/'+doc.id);
                 })
                 .catch(function(error) {
@@ -147,7 +154,6 @@ function FormCreate(props) {
               >
                 {(props) => {
                   const {
-                    
                     touched,
                     errors,
                     
@@ -244,11 +250,15 @@ function FormCreate(props) {
             </div>
             <ColorButton size="large" type="submit">Create Poll</ColorButton>
 
-
+            <Backdrop className={classes.backdrop} open={loading} >
+         <CircularProgress color="inherit" />
+     </Backdrop>
         </form>
+         
         );
     }}
   </Formik>
+  
     );
         
     
