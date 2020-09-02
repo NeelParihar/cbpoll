@@ -282,12 +282,10 @@ export default function Poll(props) {
                             </FormControl>
                             :
                             <>
-                            {pollData.title===undefined&&<Typography className={classes.title} variant="h4" component="h2"  >
+                            {(!pollData.title&&!loading)&&<Typography className={classes.title} variant="h4" component="h2"  >
                             This Poll doesn't exists.
-                        </Typography>}
-                            <Backdrop className={classes.backdrop} open={loading} >
-                                <CircularProgress color="inherit" />
-                            </Backdrop>
+                        </Typography> }
+                            
                             </>
                         }
 
@@ -297,7 +295,9 @@ export default function Poll(props) {
                                 {poll === id && <LinearProgressWithLabel value={40} />} */}
 
 
-
+                        <Backdrop className={classes.backdrop} open={loading} >
+                                <CircularProgress color="inherit" />
+                            </Backdrop>
 
                     </CardContent>
 
