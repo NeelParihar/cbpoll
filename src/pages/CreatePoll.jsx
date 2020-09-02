@@ -10,7 +10,8 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import IconButton from '@material-ui/core/IconButton';
-import {myFirestore} from '../firebase.js'
+import {withRouter} from 'react-router-dom';
+import {myFirestore} from '../firebase.js';
 import {
     Formik
   } from 'formik';
@@ -58,7 +59,7 @@ const useStyles = makeStyles({
         marginBottom: 12,
     },
 });
-export default function CreatePoll() {
+ function CreatePoll(props) {
     const classes = useStyles();
 
     return (
@@ -71,7 +72,7 @@ export default function CreatePoll() {
                             Create Poll
                         </Typography>
 
-                        <FormCreate />
+                        <FormCreate props{...props} />
 
                     </CardContent>
 
@@ -82,7 +83,7 @@ export default function CreatePoll() {
         </React.Fragment>
     );
 }
-function FormCreate() {
+function FormCreate(props) {
     
     const classes = useStyles();
     const defaultOptions = [{option:'',votes:0},{option:'',votes:0}];
@@ -123,6 +124,7 @@ function FormCreate() {
                 })
                 .then(function(doc) {
                     console.log("Document successfully written!"+doc.id);
+                    props.history.push('/poll/'+doc.id);
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
@@ -251,3 +253,4 @@ function FormCreate() {
         
     
 }
+export default withRouter(CreatePoll);

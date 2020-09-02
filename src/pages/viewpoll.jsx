@@ -126,8 +126,10 @@ export default function Poll(props) {
             .doc(id)
             .onSnapshot(snapshot => {
 
+                if(snapshot.exists)
+                {
                 setPollData(snapshot.data())
-                setLoading(true)
+                
                 let votes =0;
                 for (let index = 0; index < snapshot.data().options.length; index++) {
                     const element = snapshot.data().options[index];
@@ -137,6 +139,9 @@ export default function Poll(props) {
                     
                 }
                 setTotalVotes(votes)
+                }
+                setLoading(false)
+                
             })
 
             
@@ -168,7 +173,8 @@ export default function Poll(props) {
     //     console.log(op)
     // };
     const onSubmit = () => {
-
+        if(op!==-1)
+        {
         setPoll(id);
         setOption(op);
         console.log(op)
@@ -201,7 +207,7 @@ export default function Poll(props) {
         }).catch(function(error) {
             console.log("Transaction failed: ", error);
         });
-            
+    }
             
         
 
@@ -220,7 +226,7 @@ export default function Poll(props) {
                         </Typography>
                         <div className={classes.subtitle}>
                             <Typography variant="caption"  >
-                                by Guest
+                            {pollData.title&&'by Guest'}
                         </Typography>
                             <Typography variant="caption"  >
 
@@ -228,7 +234,7 @@ export default function Poll(props) {
                         </div>
                         <div className={classes.desc}>
                             <Typography className={classes.desc} variant="body2"  >
-                                { pollData&&pollData.description}
+                                { pollData.description&&pollData.description}
                             </Typography>
                         </div>
 
@@ -259,9 +265,14 @@ export default function Poll(props) {
                                 </RadioGroup>
                             </FormControl>
                             :
+                            <>
+                            {pollData.title===undefined&&<Typography className={classes.title} variant="h4" component="h2"  >
+                            This Poll doesn't exists.
+                        </Typography>}
                             <Backdrop className={classes.backdrop} open={loading} >
                                 <CircularProgress color="inherit" />
                             </Backdrop>
+                            </>
                         }
 
                         {/* <FormControlLabel value="male" control={<Radio color="default" />} label="Male" />
@@ -274,7 +285,7 @@ export default function Poll(props) {
 
                     </CardContent>
 
-                    <ColorButton size="large" onClick={onSubmit} disabled={poll === id} >Vote</ColorButton>
+                    {pollData.title&&<ColorButton size="large" onClick={onSubmit} disabled={poll === id} >Vote</ColorButton>}
 
                 </Card>
 
