@@ -41,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "10vh",
         minWidth: 100,
 
+        marginBottom:"10vh",
+
         padding: 10,
     },
 
@@ -171,7 +173,7 @@ export default function Poll(props) {
     const [open, setOpen] = React.useState(false);
     
     const [totalvotes,setTotalVotes] = React.useState(0);
-    const [option, setOption] = useStateWithLocalStorage('localOption');
+    // const [option, setOption] = useStateWithLocalStorage('localOption');
 
     const [op, setOp] = React.useState(-1);
 
@@ -190,7 +192,7 @@ export default function Poll(props) {
         if(op!==-1)
         {
         setPoll(id);
-        setOption(op);
+        // setOption(op);
         console.log(op)
         var sfDocRef = myFirestore.collection("poll").doc(id);
         myFirestore.runTransaction(function(transaction) {
@@ -258,7 +260,7 @@ export default function Poll(props) {
                         {pollData.options
                             ?
                             <FormControl component="fieldset" className={classes.radio}>
-                                <RadioGroup aria-label="" name="" value={option===''?op:option} >
+                                <RadioGroup aria-label="" name="" value={op} >
                                     {pollData.options.map(
                                         function (item, index) {
                                             return (
@@ -301,12 +303,14 @@ export default function Poll(props) {
 
                     {pollData.title&&<ColorButton size="large" onClick={onSubmit} disabled={poll === id} >Vote</ColorButton>}
                     <Divider />
+                    {pollData.title&&<>
                     <Typography className={classes.share} variant="body2"  >
                                 {"Share this Poll"}
                             </Typography>
                             <Typography className={classes.link} variant="body2"  >
                                 {"https://cbpoll.netlify.app/poll/"+id}
                             </Typography>
+                            </>}
                 </Card>
 
             </Container>
