@@ -1,4 +1,21 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### The site can be found here:  https://cbpoll.netlify.app/
+
+# Features of the CBPoll:
+
+- A user can anonymously create a Poll. 
+- Vote for a Poll anonymously without any registration and login.
+- Only one vote per user, therefore minimizing fake votes.
+- Results change dynamically no need to manually refresh. 
+- Fast performance and UI inspired by the Coding Blocks theme.
+
+# Features that can be added:
+- Login functionality So that the user can manage and update the polls.
+- Better visualization using graphs and piecharts.
+
+## Tech Stack:
+  #### FrontEnd: ReactJs
+  #### Backend: Firestore Db(Firebase)
+
 
 ## Available Scripts
 
